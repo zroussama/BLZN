@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect, useRef } from 'react';
-import { ShoppingCart, Truck, ShieldCheck, Star, ArrowRight, CheckCircle2, Menu, Sparkles, Facebook, Instagram, MessageCircle, Clock, Quote, BadgeCheck } from 'lucide-react';
+import { ShoppingCart, Truck, ShieldCheck, Star, ArrowRight, CheckCircle2, Sparkles, Facebook, Instagram, MessageCircle, Clock, BadgeCheck, Zap } from 'lucide-react';
 import { Language, AppView } from './types';
 import { TRANSLATIONS } from './constants';
 import LanguageToggle from './components/LanguageToggle';
@@ -73,23 +72,17 @@ const CountdownTimer: React.FC<{ lang: Language }> = ({ lang }) => {
   const format = (n: number) => n.toString().padStart(2, '0');
 
   return (
-    <div className="flex items-center gap-4 bg-slate-900 text-white px-5 py-3 rounded-2xl border border-white/10 shadow-2xl">
+    <div className="flex items-center gap-3 bg-slate-900 text-white px-4 py-2.5 rounded-2xl border border-white/10 shadow-2xl">
       <div className="flex items-center gap-2 text-blue-400">
-        <Clock size={18} className="animate-pulse" />
-        <span className="text-[10px] font-black uppercase tracking-widest shrink-0">{lang === 'fr' ? 'Offre Spéciale' : 'عرض خاص'}</span>
+        <Clock size={16} className="animate-pulse" />
+        <span className="text-[9px] font-black uppercase tracking-widest shrink-0">{lang === 'fr' ? 'Offre Spéciale' : 'عرض خاص'}</span>
       </div>
-      <div className="flex gap-2 text-xl font-black italic tracking-tighter">
-        <div className="flex flex-col items-center">
-          <span>{format(timeLeft.hours)}</span>
-        </div>
+      <div className="flex gap-1.5 text-lg font-black italic tracking-tighter">
+        <span>{format(timeLeft.hours)}</span>
         <span className="text-blue-600">:</span>
-        <div className="flex flex-col items-center">
-          <span>{format(timeLeft.minutes)}</span>
-        </div>
+        <span>{format(timeLeft.minutes)}</span>
         <span className="text-blue-600">:</span>
-        <div className="flex flex-col items-center">
-          <span>{format(timeLeft.seconds)}</span>
-        </div>
+        <span>{format(timeLeft.seconds)}</span>
       </div>
     </div>
   );
@@ -107,7 +100,6 @@ const App: React.FC = () => {
     document.documentElement.style.scrollBehavior = 'smooth';
   }, [lang]);
 
-  // Auto-scroll logic for reviews
   useEffect(() => {
     const scrollContainer = scrollRef.current;
     if (!scrollContainer) return;
@@ -115,7 +107,7 @@ const App: React.FC = () => {
     let scrollInterval: number;
     const startScrolling = () => {
       scrollInterval = window.setInterval(() => {
-        if (scrollContainer.scrollLeft + scrollContainer.offsetWidth >= scrollContainer.scrollWidth) {
+        if (scrollContainer.scrollLeft + scrollContainer.offsetWidth >= scrollContainer.scrollWidth - 10) {
           scrollContainer.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
           scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
@@ -131,6 +123,9 @@ const App: React.FC = () => {
     const element = document.getElementById('order-form');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (typeof (window as any).fbq === 'function') {
+      (window as any).fbq('track', 'InitiateCheckout');
     }
   };
 
@@ -161,9 +156,23 @@ const App: React.FC = () => {
 
   return (
     <div className={`min-h-screen flex flex-col bg-[#F8FAFC] overflow-x-hidden selection:bg-blue-600 selection:text-white font-sans ${lang === 'ar' ? 'font-arabic' : ''}`}>
-      {/* Background decoration */}
       <div className="fixed top-[-10%] left-[-10%] w-[60%] h-[60%] bg-blue-400/5 blur-[120px] rounded-full -z-10 animate-pulse"></div>
       <div className="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/5 blur-[120px] rounded-full -z-10"></div>
+
+      {/* High Impact Green Communication Bar */}
+      <div className="fixed top-20 w-full bg-[#10B981] text-white z-30 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 text-center">
+          <div className="flex items-center gap-2 font-black text-xs sm:text-sm uppercase tracking-widest italic">
+            <Truck size={18} />
+            <span>{lang === 'fr' ? 'LIVRAISON GRATUITE (TUNISIE) 🇹🇳' : 'توصيل مجاني لكامل تراب الجمهورية 🇹🇳'}</span>
+          </div>
+          <div className="hidden sm:block w-px h-4 bg-white/30"></div>
+          <div className="flex items-center gap-2 font-black text-xs sm:text-sm uppercase tracking-widest italic">
+            <Zap size={18} className="fill-white" />
+            <span>{lang === 'fr' ? 'REÇU EN 24H-48H PARTOUT EN TUNISIE' : 'الاستلام في 24-48 ساعة في كل الولايات'}</span>
+          </div>
+        </div>
+      </div>
 
       <header className="fixed top-0 w-full bg-white/70 backdrop-blur-xl z-40 border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -182,12 +191,12 @@ const App: React.FC = () => {
         </div>
       </header>
 
-      <main className="flex-1 pt-24">
+      <main className="flex-1 pt-32 sm:pt-40">
         {/* Hero Section */}
         <section className="relative px-4 pb-16 lg:pb-32 overflow-hidden">
           <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             {/* Hero Content */}
-            <div className="order-2 lg:order-1 space-y-8 animate-in slide-in-from-bottom-8 duration-700">
+            <div className="order-2 lg:order-1 space-y-12 animate-in slide-in-from-bottom-8 duration-700">
               <div className="flex flex-wrap items-center gap-3">
                 <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200">
                   <span className="animate-pulse shrink-0"><Sparkles size={12} /></span>
@@ -207,56 +216,52 @@ const App: React.FC = () => {
                 {t.hero.subtitle}
               </p>
 
-              {/* Responsive Price Block */}
-              <div className="bg-white p-6 md:p-10 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center md:items-stretch gap-8 group relative">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50/50 rounded-full -mr-16 -mt-16 -z-10"></div>
-                
-                {/* Price Display */}
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-4 w-full">
-                  <div className="relative inline-flex items-baseline">
-                    <span className="text-5xl md:text-7xl font-black text-slate-300 italic line-through decoration-red-600 decoration-[4px] md:decoration-[8px]">
-                      {t.hero.oldPrice}
-                    </span>
-                    <span className="text-sm font-black text-slate-400 ml-1 uppercase">{lang === 'fr' ? 'dt' : 'د.ت'}</span>
-                  </div>
-                  
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-7xl md:text-9xl font-black text-blue-600 tracking-tighter drop-shadow-sm animate-pulse [animation-duration:4s]">
-                      {t.hero.newPrice}
-                    </span>
-                    <span className="text-xl font-black text-blue-600 uppercase italic">{lang === 'fr' ? 'dt' : 'د.ت'}</span>
-                  </div>
-                </div>
-
-                <div className="w-full h-px bg-slate-100"></div>
-
-                {/* Sub-info */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6 w-full">
-                  <div className="flex items-center gap-3 text-emerald-600 font-black text-base uppercase tracking-wider bg-emerald-50/50 px-6 py-3 rounded-2xl border border-emerald-100/50 w-full md:w-auto justify-center">
-                    <Truck size={24} className="shrink-0" />
-                    <span className="leading-tight whitespace-nowrap">{t.hero.freeDelivery}</span>
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <div className="bg-blue-600 text-white px-4 py-2 rounded-xl text-[11px] font-black uppercase tracking-widest shadow-lg shadow-blue-100">
-                      {lang === 'fr' ? 'ÉCONOMISEZ 30 DT' : 'وفر 30 د.ت'}
+              {/* Price Container with Independent Floating Badge */}
+              <div className="relative pt-6">
+                {/* Independent Floating Badge */}
+                <div className={`absolute -top-12 ${lang === 'ar' ? 'left-6' : 'right-6'} z-10 animate-bounce duration-[3000ms]`}>
+                  <div className="bg-slate-900 text-white px-8 py-5 rounded-[2.5rem] text-center shadow-2xl shadow-slate-300 transform -rotate-3 hover:rotate-0 transition-transform cursor-default">
+                    <div className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 mb-1">
+                      {lang === 'fr' ? 'OFFRE LIMITÉE' : 'عرض محدود'}
                     </div>
-                    <div className="flex items-center gap-1.5 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
-                      {[1,2,3,4,5].map(i => <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />)}
-                      <span className="text-slate-500 text-xs font-black ml-1 tracking-tighter">4.9/5</span>
+                    <div className="text-3xl font-black italic tracking-tighter flex items-center justify-center gap-3 text-blue-400">
+                      <Zap size={20} className="fill-blue-400" />
+                      <span>-{lang === 'fr' ? '30 DT' : '30 د.ت'}</span>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="pt-4">
-                <button
-                  onClick={scrollToOrder}
-                  className="w-full sm:w-auto min-w-[300px] bg-slate-900 text-white text-center py-6 px-10 rounded-2xl font-black text-xl hover:bg-blue-600 transition-all shadow-xl hover:shadow-blue-100 flex items-center justify-center gap-4 group active:scale-95"
-                >
-                  {t.header.orderBtn}
-                  <ArrowRight size={24} className={`group-hover:translate-x-2 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-2' : ''}`} />
-                </button>
+                {/* Main Price Card */}
+                <div className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col gap-8 group overflow-hidden">
+                  <div className="absolute top-0 right-0 w-48 h-48 bg-blue-50/50 rounded-full -mr-24 -mt-24 -z-10"></div>
+                  
+                  <div className="flex flex-col sm:flex-row items-center gap-x-12 gap-y-4 justify-center md:justify-start">
+                    {/* Improved 99 Barred Visual */}
+                    <div className="relative inline-flex items-baseline opacity-70 group-hover:opacity-100 transition-opacity">
+                      <span className="text-5xl md:text-6xl font-black text-slate-500 italic line-through decoration-red-500 decoration-[8px] drop-shadow-sm">
+                        {t.hero.oldPrice}
+                      </span>
+                      <span className="text-sm font-black text-slate-500 ml-1 uppercase">{lang === 'fr' ? 'dt' : 'د.ت'}</span>
+                    </div>
+                    
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[8rem] md:text-[10rem] font-black text-blue-600 tracking-tighter drop-shadow-sm leading-none">
+                        {t.hero.newPrice}
+                      </span>
+                      <span className="text-3xl font-black text-blue-600 uppercase italic">{lang === 'fr' ? 'dt' : 'د.ت'}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <button
+                      onClick={scrollToOrder}
+                      className="w-full bg-blue-600 text-white text-center py-7 rounded-3xl font-black text-2xl hover:bg-slate-900 transition-all shadow-xl hover:shadow-blue-200 flex items-center justify-center gap-4 group active:scale-95"
+                    >
+                      {t.header.orderBtn}
+                      <ArrowRight size={28} className={`group-hover:translate-x-2 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-2' : ''}`} />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -264,28 +269,26 @@ const App: React.FC = () => {
             <div className="order-1 lg:order-2 relative animate-in zoom-in-95 duration-700">
                <div className="absolute -inset-4 bg-blue-500/5 rounded-[4rem] blur-[80px] -z-10 animate-pulse"></div>
                <div className="relative">
-                <div className="relative overflow-hidden rounded-[3rem] shadow-2xl border-[8px] border-white">
+                <div className="relative overflow-hidden rounded-[4rem] shadow-2xl border-[10px] border-white">
                   <img
-                    src="photo.jpeg"
+                    src="https://i.postimg.cc/4NHLq5WN/Whats-App-Image-2026-01-04-at-18-39-57-(1).jpg"
                     alt="BLZN Puffer Jacket"
-                    className="w-full h-auto object-cover min-h-[400px]"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = "https://i.postimg.cc/4NHLq5WN/Whats-App-Image-2026-01-04-at-18-39-57-(1).jpg";
-                    }}
+                    className="w-full h-auto object-cover min-h-[450px]"
+                    loading="eager"
                   />
-                  <div className="absolute top-6 right-6 bg-blue-600 text-white px-4 py-2 rounded-xl shadow-lg font-black text-[9px] tracking-widest flex items-center gap-2">
-                     <Star size={12} className="fill-white" />
+                  <div className="absolute top-8 right-8 bg-blue-600 text-white px-5 py-2.5 rounded-2xl shadow-xl font-black text-[10px] tracking-widest flex items-center gap-2">
+                     <Star size={14} className="fill-white" />
                      {lang === 'fr' ? 'QUALITÉ SUPÉRIEURE' : 'جودة عالمية'}
                   </div>
                 </div>
 
-                <div className={`absolute -bottom-6 ${lang === 'ar' ? '-left-6' : '-right-6'} bg-white p-5 rounded-3xl shadow-2xl border border-slate-50 flex items-center gap-4 animate-bounce [animation-duration:5s]`}>
-                   <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                      <ShieldCheck size={28} className="text-blue-600" />
+                <div className={`absolute -bottom-8 ${lang === 'ar' ? '-left-8' : '-right-8'} bg-white p-6 rounded-[2.5rem] shadow-2xl border border-slate-50 flex items-center gap-5 animate-bounce [animation-duration:6s]`}>
+                   <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center shrink-0">
+                      <ShieldCheck size={32} className="text-blue-600" />
                    </div>
                    <div className="pr-2">
-                      <div className="font-black text-slate-900 text-base leading-tight tracking-tight">{lang === 'fr' ? 'Stock Limité' : 'كمية محدودة'}</div>
-                      <div className="text-slate-400 text-[9px] font-black tracking-widest uppercase">Hiver 2026 Collection</div>
+                      <div className="font-black text-slate-900 text-lg leading-tight tracking-tight">{lang === 'fr' ? 'Stock Limité' : 'كمية محدودة'}</div>
+                      <div className="text-slate-400 text-[10px] font-black tracking-widest uppercase">Hiver 2026 Collection</div>
                    </div>
                 </div>
               </div>
@@ -294,19 +297,19 @@ const App: React.FC = () => {
         </section>
 
         {/* Benefits Bar */}
-        <section className="bg-slate-950 py-16 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+        <section className="bg-slate-950 py-20 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
             {[
-              { icon: Truck, title: lang === 'fr' ? "Livraison" : "توصيل", desc: lang === 'fr' ? "Gratuite sur toute la Tunisie" : "مجاني لكل الولايات" },
-              { icon: ShieldCheck, title: lang === 'fr' ? "Performance" : "أداء", desc: lang === 'fr' ? "Tissu technique haute qualité" : "قماش عالي الجودة" },
-              { icon: ShoppingCart, title: lang === 'fr' ? "Paiement" : "دفع", desc: lang === 'fr' ? "Cash à la réception" : "دفع عند الاستلام" },
+              { icon: Truck, title: lang === 'fr' ? "Livraison Rapide" : "توصيل سريع", desc: lang === 'fr' ? "Gratuite sur toute la Tunisie" : "مجاني لكل الولايات" },
+              { icon: ShieldCheck, title: lang === 'fr' ? "Performance Tech" : "أداء تقني", desc: lang === 'fr' ? "Tissu technique imperméable" : "قماش عالي الجودة وضد الماء" },
+              { icon: ShoppingCart, title: lang === 'fr' ? "Paiement Cash" : "دفع كاش", desc: lang === 'fr' ? "Payez seulement à la livraison" : "دفع عند الاستلام بعد التثبت" },
             ].map((item, idx) => (
-              <div key={idx} className="flex flex-col md:flex-row items-center gap-6 group">
-                <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center text-blue-400 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
-                  <item.icon size={28} />
+              <div key={idx} className="flex flex-col md:flex-row items-center gap-8 group">
+                <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center text-blue-400 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+                  <item.icon size={32} />
                 </div>
                 <div>
-                  <h4 className="text-white font-black text-lg uppercase tracking-tight">{item.title}</h4>
+                  <h4 className="text-white font-black text-xl uppercase tracking-tight">{item.title}</h4>
                   <p className="text-slate-400 text-sm font-semibold mt-1">{item.desc}</p>
                 </div>
               </div>
@@ -314,60 +317,58 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Reviews Section - Updated to Horizontal Slider */}
+        {/* Reviews Section - Smooth Horizontal Slider */}
         <section className="py-24 px-4 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16 space-y-3">
-              <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.4em]">Témoignages</span>
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter">
+            <div className="text-center mb-16 space-y-4">
+              <span className="text-blue-600 font-black text-xs uppercase tracking-[0.4em]">Témoignages Clients</span>
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">
                 {lang === 'fr' ? 'La parole est à vous' : 'آراء حرفائنا'}
               </h2>
-              <div className="w-12 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+              <div className="w-16 h-2 bg-blue-600 mx-auto rounded-full"></div>
             </div>
 
             <div 
               ref={scrollRef}
-              className="flex gap-6 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar scroll-smooth"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              className="flex gap-8 overflow-x-auto pb-12 snap-x snap-mandatory no-scrollbar scroll-smooth"
             >
               {REVIEWS.map((review, idx) => (
                 <div 
                   key={idx} 
-                  className="min-w-[85%] md:min-w-[calc(33.333%-16px)] snap-center bg-slate-50 p-8 rounded-[2rem] border border-slate-100 flex flex-col justify-between hover:bg-white hover:shadow-2xl transition-all duration-300 group"
+                  className="min-w-[90%] md:min-w-[calc(33.333%-21px)] snap-center bg-slate-50 p-10 rounded-[3rem] border border-slate-100 flex flex-col justify-between hover:bg-white hover:shadow-2xl transition-all duration-500 group"
                 >
                   <div>
-                    <div className="flex justify-between items-start mb-6">
+                    <div className="flex justify-between items-start mb-8">
                       <div className="flex gap-1">
                         {[...Array(review.rating)].map((_, i) => (
-                          <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />
+                          <Star key={i} size={16} className="fill-yellow-400 text-yellow-400" />
                         ))}
                       </div>
-                      <div className="flex items-center gap-1 bg-emerald-100 text-emerald-700 px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest">
-                        <BadgeCheck size={12} />
+                      <div className="flex items-center gap-1.5 bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                        <BadgeCheck size={14} />
                         {lang === 'fr' ? 'Achat Vérifié' : 'تم التأكد'}
                       </div>
                     </div>
-                    <p className="text-slate-600 font-semibold mb-8 leading-relaxed italic">"{review.comment}"</p>
+                    <p className="text-slate-700 font-semibold mb-10 leading-relaxed italic text-lg">"{review.comment}"</p>
                   </div>
-                  <div className="flex items-center gap-4 pt-6 border-t border-slate-200/50">
-                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-black text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                  <div className="flex items-center gap-5 pt-8 border-t border-slate-200/50">
+                    <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-black text-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       {review.name[0]}
                     </div>
                     <div>
-                      <h4 className="font-black text-slate-900 text-xs flex items-center gap-2">
+                      <h4 className="font-black text-slate-900 text-sm flex items-center gap-2">
                         {review.name}
                       </h4>
-                      <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">{review.city} • {review.date}</p>
+                      <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{review.city} • {review.date}</p>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Pagination indicators */}
-            <div className="flex justify-center gap-2 mt-4">
-               {REVIEWS.map((_, i) => (
-                 <div key={i} className={`h-1.5 rounded-full bg-blue-600 transition-all duration-300 ${i === 0 ? 'w-8' : 'w-2 opacity-20'}`}></div>
+            <div className="flex justify-center gap-3 mt-6">
+               {REVIEWS.slice(0, 3).map((_, i) => (
+                 <div key={i} className={`h-2 rounded-full transition-all duration-500 ${i === 0 ? 'w-12 bg-blue-600' : 'w-3 bg-slate-200'}`}></div>
                ))}
             </div>
           </div>
@@ -375,10 +376,10 @@ const App: React.FC = () => {
 
         {/* Order Form Section */}
         <section id="order-form" className="py-24 px-4 bg-slate-50 scroll-mt-20">
-          <div className="max-w-7xl mx-auto text-center mb-16 space-y-3">
-            <span className="text-blue-600 font-black text-[10px] uppercase tracking-[0.4em]">Fast Checkout</span>
-            <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic">{t.form.title}</h2>
-            <div className="w-16 h-1.5 bg-blue-600 mx-auto rounded-full"></div>
+          <div className="max-w-7xl mx-auto text-center mb-16 space-y-4">
+            <span className="text-blue-600 font-black text-xs uppercase tracking-[0.4em]">Livraison Express</span>
+            <h2 className="text-4xl md:text-7xl font-black text-slate-900 tracking-tighter uppercase italic">{t.form.title}</h2>
+            <div className="w-20 h-2 bg-blue-600 mx-auto rounded-full"></div>
           </div>
           <OrderForm 
             t={t.form} 
@@ -386,47 +387,52 @@ const App: React.FC = () => {
             onSuccess={() => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
               setView('success');
+              if (typeof (window as any).fbq === 'function') {
+                (window as any).fbq('track', 'Lead', { value: 69, currency: 'TND' });
+              }
             }} 
           />
         </section>
       </main>
 
-      <footer className="bg-slate-950 text-white py-20 px-4">
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-16">
-          <div className="lg:col-span-2 space-y-6">
-            <span className="text-3xl font-black italic tracking-tighter text-blue-600 uppercase">BLZN</span>
-            <p className="text-slate-400 text-lg leading-relaxed max-w-md font-medium">
-              Performance urbaine, confort exceptionnel. La marque qui redéfinit l'hiver en Tunisie.
+      <footer className="bg-slate-950 text-white py-24 px-4">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 lg:grid-cols-4 gap-20">
+          <div className="lg:col-span-2 space-y-8">
+            <div className="flex items-center group cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <span className="text-4xl font-black italic tracking-tighter text-blue-600 uppercase">BLZN</span>
+            </div>
+            <p className="text-slate-400 text-xl leading-relaxed max-w-md font-medium">
+              Performance urbaine, confort exceptionnel. La marque qui redéfinit l'hiver en Tunisie pour la nouvelle génération.
             </p>
           </div>
-          <div className="space-y-6">
-            <h4 className="font-black text-sm uppercase tracking-widest text-white/50">Contact</h4>
-            <ul className="text-slate-400 space-y-4 font-bold text-sm">
-              <li>📍 Tunis, Berges du Lac</li>
-              <li>📞 44 377 533</li>
-              <li>💬 Support WhatsApp 24/7</li>
+          <div className="space-y-8">
+            <h4 className="font-black text-sm uppercase tracking-widest text-white/50">Support & Contact</h4>
+            <ul className="text-slate-400 space-y-5 font-bold text-base">
+              <li className="flex items-center gap-3">📍 <span className="text-white">Tunis, Berges du Lac 2</span></li>
+              <li className="flex items-center gap-3">📞 <span className="text-white">44 377 533</span></li>
+              <li className="flex items-center gap-3">💬 <span className="text-white">Support WhatsApp 24/7</span></li>
             </ul>
           </div>
-          <div className="space-y-6">
-            <h4 className="font-black text-sm uppercase tracking-widest text-white/50">Réseaux</h4>
-            <div className="flex gap-4">
-              <a href="https://www.facebook.com/blzntn/" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white/5 hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all border border-white/10 group">
-                <Facebook size={20} className="group-hover:scale-110 transition-transform" />
+          <div className="space-y-8">
+            <h4 className="font-black text-sm uppercase tracking-widest text-white/50">Rejoignez-nous</h4>
+            <div className="flex gap-5">
+              <a href="https://www.facebook.com/blzntn/" target="_blank" rel="noopener noreferrer" className="w-14 h-14 bg-white/5 hover:bg-blue-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
+                <Facebook size={24} className="group-hover:scale-110 transition-transform" />
               </a>
-              <a href="#" className="w-12 h-12 bg-white/5 hover:bg-pink-600 rounded-xl flex items-center justify-center transition-all border border-white/10 group">
-                <Instagram size={20} className="group-hover:scale-110 transition-transform" />
+              <a href="#" className="w-14 h-14 bg-white/5 hover:bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
+                <Instagram size={24} className="group-hover:scale-110 transition-transform" />
               </a>
-              <a href="#" className="w-12 h-12 bg-white/5 hover:bg-emerald-600 rounded-xl flex items-center justify-center transition-all border border-white/10 group">
-                <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
+              <a href="#" className="w-14 h-14 bg-white/5 hover:bg-emerald-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
+                <MessageCircle size={24} className="group-hover:scale-110 transition-transform" />
               </a>
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-600 text-[10px] font-black tracking-widest uppercase">
+        <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-slate-600 text-[11px] font-black tracking-[0.2em] uppercase">
           <span>&copy; {new Date().getFullYear()} BLZN TUNISIA. URBAN PERFORMANCE WEAR.</span>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-blue-500 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-blue-500 transition-colors">Terms</a>
+          <div className="flex gap-8">
+            <a href="#" className="hover:text-blue-500 transition-colors">Politique de Confidentialité</a>
+            <a href="#" className="hover:text-blue-500 transition-colors">Conditions Générales</a>
           </div>
         </div>
       </footer>

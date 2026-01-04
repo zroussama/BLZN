@@ -302,7 +302,7 @@ const App: React.FC = () => {
             {[
               { icon: Truck, title: lang === 'fr' ? "Livraison Rapide" : "توصيل سريع", desc: lang === 'fr' ? "Gratuite sur toute la Tunisie" : "مجاني لكل الولايات" },
               { icon: ShieldCheck, title: lang === 'fr' ? "Performance Tech" : "أداء تقني", desc: lang === 'fr' ? "Tissu technique imperméable" : "قماش عالي الجودة وضد الماء" },
-              { icon: ShoppingCart, title: lang === 'fr' ? "Paiement Cash" : "دفع كاش", desc: lang === 'fr' ? "Payez seulement à la livraison" : "دفع عند الاستلام بعد التثبت" },
+              { icon: ShoppingCart, title: lang === 'fr' ? "Paiement Cash" : "دفع كاش", desc: lang === 'fr' ? "Payez seulement à la livraison" : "دفع عند الاستلام après التثبت" },
             ].map((item, idx) => (
               <div key={idx} className="flex flex-col md:flex-row items-center gap-8 group">
                 <div className="w-16 h-16 bg-white/5 rounded-3xl flex items-center justify-center text-blue-400 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">

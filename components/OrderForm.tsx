@@ -1,8 +1,14 @@
-
 import React, { useState } from 'react';
 import { Language, TranslationSchema } from '../types';
 import { GOVERNORATES, SIZES } from '../constants';
 import { AlertCircle, Loader2, Send } from 'lucide-react';
+
+// --- CONFIGURATION NOTIFICATIONS ---
+const TELEGRAM_BOT_TOKEN = '8485058700:AAHxEji7N99TFsmngTq64wXbQWckzeJEENI'; 
+const TELEGRAM_CHAT_ID = '8072987611'; 
+
+const N8N_WEBHOOK_URL = ''; 
+// ----------------------------------
 
 interface OrderFormProps {
   t: TranslationSchema['form'];
@@ -23,6 +29,53 @@ const OrderForm: React.FC<OrderFormProps> = ({ t, lang, onSuccess }) => {
 
   const validatePhone = (phone: string) => {
     return /^[0-9]{8}$/.test(phone.replace(/\s/g, ''));
+  };
+
+  const sendNotification = async (data: any) => {
+    if (TELEGRAM_BOT_TOKEN && TELEGRAM_CHAT_ID) {
+      const text = `
+🆕 *NOUVELLE COMMANDE BLZN*
+━━━━━━━━━━━━━━━━━━
+👤 *Client:* ${data.Nom}
+📞 *Tel:* ${data.Tel}
+📍 *Ville:* ${data.Ville}
+🏠 *Adresse:* ${data.Adresse}
+📏 *Taille:* ${data.Taille}
+━━━━━━━━━━━━━━━━━━
+💰 *Total:* 69 DT (Livraison Gratuite)
+⏰ *Date:* ${data.Date}
+      `;
+      
+      try {
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: text,
+            parse_mode: 'Markdown'
+          })
+        });
+      } catch (e) {
+        console.error("Erreur Telegram:", e);
+      }
+    }
+
+    if (N8N_WEBHOOK_URL) {
+      try {
+        await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...data,
+            source: 'Landing Page BLZN',
+            status: 'Nouveau'
+          })
+        });
+      } catch (e) {
+        console.error("Erreur n8n:", e);
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,29 +116,19 @@ const OrderForm: React.FC<OrderFormProps> = ({ t, lang, onSuccess }) => {
       const result = await response.json();
 
       if (response.ok && (result.created === 1 || result.affected_rows === 1)) {
-        // Trigger Google Analytics Event
-        if (typeof (window as any).gtag === 'function') {
-          (window as any).gtag('event', 'purchase', {
-            currency: 'TND',
-            value: 69.00,
-            items: [{
-              item_id: 'BLZN_DOUDOUNE_2026',
-              item_name: 'Doudoune BLZN Tech-Wear',
-              item_category: 'Hiver 2026',
-              price: 69.00,
-              quantity: 1,
-              variant: formData.taille
-            }]
-          });
+        await sendNotification(payload);
+
+        if (typeof (window as any).fbq === 'function') {
+          (window as any).fbq('track', 'Purchase', { value: 69.00, currency: 'TND' });
         }
+        
         onSuccess();
       } else {
-        console.error("Détails erreur SheetDB:", result);
-        throw new Error('Failed to submit');
+        throw new Error('SheetDB Error');
       }
     } catch (err) {
       console.error(err);
-      setError("Erreur: Vérifiez vos colonnes Sheets (Date, Nom, Tel, Adresse, Ville, Taille)");
+      setError("Désolé, une erreur s'est produite. Contactez-nous directement sur WhatsApp pour commander !");
     } finally {
       setIsSubmitting(false);
     }
@@ -96,7 +139,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ t, lang, onSuccess }) => {
   };
 
   return (
-    <div id="order-form" className="bg-white rounded-[2.5rem] shadow-2xl p-8 border border-blue-50 max-w-xl mx-auto mb-12 relative overflow-hidden">
+    <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 border border-blue-50 max-w-xl mx-auto mb-12 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
       
       <h2 className="text-3xl font-black text-slate-900 mb-8 text-center flex items-center justify-center gap-3">

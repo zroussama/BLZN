@@ -7,7 +7,7 @@ export const GOVERNORATES = [
   "Sousse", "Tataouine", "Tozeur", "Tunis", "Zaghouan"
 ];
 
-export const SIZES = ["S", "M", "L", "XL"];
+export const SIZES = ["S", "M", "L"];
 
 export const TRANSLATIONS: Record<'fr' | 'ar', TranslationSchema> = {
   fr: {

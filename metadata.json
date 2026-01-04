@@ -1,0 +1,9 @@
+
+{
+  "name": "Doudoune Deluxe Tunisia",
+  "description": "Une landing page moderne et élégante pour la vente de doudounes premium en Tunisie, avec support bilingue (Français/Arabe) et assistant IA intégré.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

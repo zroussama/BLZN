@@ -415,7 +415,7 @@ const App: React.FC = () => {
             <h4 className="font-black text-sm uppercase tracking-widest text-white/50">Support & Contact</h4>
             <ul className="text-slate-400 space-y-5 font-bold text-base">
               <li className="flex items-center gap-3">📍 <span className="text-white">Tunis, Berges du Lac 2</span></li>
-              <li className="flex items-center gap-3">📞 <span className="text-white">44 377 533</span></li>
+              <li className="flex items-center gap-3">📞 <span className="text-white">51 14 14 22</span></li>
               <li className="flex items-center gap-3">💬 <span className="text-white">Support WhatsApp 24/7</span></li>
             </ul>
           </div>

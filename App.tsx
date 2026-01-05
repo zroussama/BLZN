@@ -88,6 +88,28 @@ const CountdownTimer: React.FC<{ lang: Language }> = ({ lang }) => {
   );
 };
 
+const WhatsAppButton: React.FC<{ lang: Language }> = ({ lang }) => {
+  const phone = "44377533"; // Votre numéro
+  const message = lang === 'fr' 
+    ? "Bonjour BLZN, je voudrais avoir plus d'informations sur la Doudoune." 
+    : "عسلامة BLZN، نحب نسأل على الـ Doudoune يعيشكم.";
+  
+  const url = `https://wa.me/216${phone}?text=${encodeURIComponent(message)}`;
+
+  return (
+    <a 
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 left-6 z-50 bg-[#25D366] text-white p-5 rounded-[2rem] shadow-2xl flex items-center gap-3 hover:scale-110 transition-all active:scale-95 border-4 border-white shadow-emerald-500/20 group"
+    >
+      <MessageCircle className="fill-white" />
+      <span className="font-black hidden md:inline uppercase tracking-widest text-xs italic">WhatsApp</span>
+      <div className="absolute -top-1 -right-1 w-5 h-5 bg-emerald-400 rounded-full animate-ping opacity-75"></div>
+    </a>
+  );
+};
+
 const App: React.FC = () => {
   const [lang, setLanguage] = useState<Language>('fr');
   const [view, setView] = useState<AppView>('landing');
@@ -164,7 +186,7 @@ const App: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 text-center">
           <div className="flex items-center gap-2 font-black text-xs sm:text-sm uppercase tracking-widest italic">
             <Truck size={18} />
-            <span>{lang === 'fr' ? 'LIVRAISON GRATUITE (TUNISIE) 🇹🇳' : 'توصيل مجاني لكامل تراب الجمهورية 🇹🇳'}</span>
+            <span>{lang === 'fr' ? 'LIVRAISON GRATUITE (TUNISIE) 🇹🇳' : 'توصيل مجاني لكل الولايات 🇹🇳'}</span>
           </div>
           <div className="hidden sm:block w-px h-4 bg-white/30"></div>
           <div className="flex items-center gap-2 font-black text-xs sm:text-sm uppercase tracking-widest italic">
@@ -192,10 +214,8 @@ const App: React.FC = () => {
       </header>
 
       <main className="flex-1 pt-32 sm:pt-40">
-        {/* Hero Section */}
         <section className="relative px-4 pb-16 lg:pb-32 overflow-hidden">
           <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-            {/* Hero Content */}
             <div className="order-2 lg:order-1 space-y-12 animate-in slide-in-from-bottom-8 duration-700">
               <div className="flex flex-wrap items-center gap-3">
                 <div className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-blue-200">
@@ -216,9 +236,7 @@ const App: React.FC = () => {
                 {t.hero.subtitle}
               </p>
 
-              {/* Price Container with Independent Floating Badge */}
               <div className="relative pt-6">
-                {/* Independent Floating Badge */}
                 <div className={`absolute -top-12 ${lang === 'ar' ? 'left-6' : 'right-6'} z-10 animate-bounce duration-[3000ms]`}>
                   <div className="bg-slate-900 text-white px-8 py-5 rounded-[2.5rem] text-center shadow-2xl shadow-slate-300 transform -rotate-3 hover:rotate-0 transition-transform cursor-default">
                     <div className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60 mb-1">
@@ -231,12 +249,10 @@ const App: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Main Price Card */}
                 <div className="bg-white p-8 md:p-12 rounded-[3.5rem] shadow-2xl shadow-blue-900/5 border border-slate-100 flex flex-col gap-8 group overflow-hidden">
                   <div className="absolute top-0 right-0 w-48 h-48 bg-blue-50/50 rounded-full -mr-24 -mt-24 -z-10"></div>
                   
                   <div className="flex flex-col sm:flex-row items-center gap-x-12 gap-y-4 justify-center md:justify-start">
-                    {/* Improved 99 Barred Visual */}
                     <div className="relative inline-flex items-baseline opacity-70 group-hover:opacity-100 transition-opacity">
                       <span className="text-5xl md:text-6xl font-black text-slate-500 italic line-through decoration-red-500 decoration-[8px] drop-shadow-sm">
                         {t.hero.oldPrice}
@@ -265,7 +281,6 @@ const App: React.FC = () => {
               </div>
             </div>
 
-            {/* Hero Image Section */}
             <div className="order-1 lg:order-2 relative animate-in zoom-in-95 duration-700">
                <div className="absolute -inset-4 bg-blue-500/5 rounded-[4rem] blur-[80px] -z-10 animate-pulse"></div>
                <div className="relative">
@@ -296,7 +311,6 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Benefits Bar */}
         <section className="bg-slate-950 py-20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-16 text-center md:text-left">
             {[
@@ -317,12 +331,11 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        {/* Reviews Section - Smooth Horizontal Slider */}
         <section className="py-24 px-4 bg-white overflow-hidden">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16 space-y-4">
               <span className="text-blue-600 font-black text-xs uppercase tracking-[0.4em]">Témoignages Clients</span>
-              <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter">
+              <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic">
                 {lang === 'fr' ? 'La parole est à vous' : 'آراء حرفائنا'}
               </h2>
               <div className="w-16 h-2 bg-blue-600 mx-auto rounded-full"></div>
@@ -365,16 +378,9 @@ const App: React.FC = () => {
                 </div>
               ))}
             </div>
-
-            <div className="flex justify-center gap-3 mt-6">
-               {REVIEWS.slice(0, 3).map((_, i) => (
-                 <div key={i} className={`h-2 rounded-full transition-all duration-500 ${i === 0 ? 'w-12 bg-blue-600' : 'w-3 bg-slate-200'}`}></div>
-               ))}
-            </div>
           </div>
         </section>
 
-        {/* Order Form Section */}
         <section id="order-form" className="py-24 px-4 bg-slate-50 scroll-mt-20">
           <div className="max-w-7xl mx-auto text-center mb-16 space-y-4">
             <span className="text-blue-600 font-black text-xs uppercase tracking-[0.4em]">Livraison Express</span>
@@ -419,7 +425,7 @@ const App: React.FC = () => {
               <a href="https://www.facebook.com/blzntn/" target="_blank" rel="noopener noreferrer" className="w-14 h-14 bg-white/5 hover:bg-blue-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
                 <Facebook size={24} className="group-hover:scale-110 transition-transform" />
               </a>
-              <a href="#" className="w-14 h-14 bg-white/5 hover:bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
+              <a href="https://www.instagram.com/blzn_tn" className="w-14 h-14 bg-white/5 hover:bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
                 <Instagram size={24} className="group-hover:scale-110 transition-transform" />
               </a>
               <a href="#" className="w-14 h-14 bg-white/5 hover:bg-emerald-600 rounded-2xl flex items-center justify-center transition-all border border-white/10 group shadow-lg">
@@ -428,15 +434,9 @@ const App: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto mt-24 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 text-slate-600 text-[11px] font-black tracking-[0.2em] uppercase">
-          <span>&copy; {new Date().getFullYear()} BLZN TUNISIA. URBAN PERFORMANCE WEAR.</span>
-          <div className="flex gap-8">
-            <a href="#" className="hover:text-blue-500 transition-colors">Politique de Confidentialité</a>
-            <a href="#" className="hover:text-blue-500 transition-colors">Conditions Générales</a>
-          </div>
-        </div>
       </footer>
 
+      <WhatsAppButton lang={lang} />
       <AiStylist lang={lang} />
     </div>
   );
